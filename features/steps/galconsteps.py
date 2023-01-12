@@ -15,7 +15,11 @@ def launchBrowser(context):
 
 @when('one channel page')
 def openOneChannelPage(context):
-    WebDriverWait(context.driver, 10).until(EC.presence_of_element_located((By.XPATH, '//*[@id="root"]/div/section/section[1]/div[2]/ul/li[35]/a'))).click()
+    #attempt to try to use a click method but there is a problem with the writing element in the HTML and/ the click is not working...
+    #WebDriverWait(context.driver, 10).until(EC.presence_of_element_located((By.XPATH, '//*[@id="root"]/div/section/section[1]/div[2]/ul/li[35]/a'))).click()
+    context.driver.get('https://tv-guide.walla.co.il/channel/3770')
+    print(context.driver.title)
+
 
 
 
@@ -45,10 +49,15 @@ def verifyShow(context):
 
     # created a list of tuples containing show names and time and
     # and finding if the requested show exists in the list in the rigth time
-    for i in [(i.find_element(By.TAG_NAME, "h3").get_attribute("innerText"),
-               i.find_element(By.TAG_NAME, "time").get_attribute("innerText")) for i in programs]:
-        if i[0] == "זהו זה!" and i[1] == "21:15":
-            print("The Program Zehu Ze! is broadcasted on thursday at 21:15")
+    progs = [(i.find_element(By.TAG_NAME, "h3").get_attribute("innerText"),
+              i.find_element(By.TAG_NAME, "time").get_attribute("innerText")) for i in programs]
+    assert ("זהו זה!", "21:15") in progs
+    ###option 2
+    # for i in [(i.find_element(By.TAG_NAME, "h3").get_attribute("innerText"),
+    #            i.find_element(By.TAG_NAME, "time").get_attribute("innerText")) for i in programs]:
+    #     assert ()
+    #     if i[0] == "זהו זה!" and i[1] == "21:15":
+    #         print("The Program Zehu Ze! is broadcasted on thursday at 21:15")
 
 
 @then('close browser')
